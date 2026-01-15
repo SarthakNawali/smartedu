@@ -3,12 +3,13 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDHpV--QSS0L1MNyRP7m2RD-uQyqY4EkAM",
-  authDomain: "focusedu-4ccd1.firebaseapp.com",
-  projectId: "focusedu-4ccd1",
-  storageBucket: "focusedu-4ccd1.appspot.com",
-  messagingSenderId: "694054386034",
-  appId: "1:694054386034:web:d3d001d6799ca3cfb085eb",
+  apiKey: "AIzaSyBCyVMNEaVCM9CCa-WemQ01aKhYZGFLaMo",
+  authDomain: "smartedu-e8b4b.firebaseapp.com",
+  projectId: "smartedu-e8b4b",
+  storageBucket: "smartedu-e8b4b.firebasestorage.app",
+  messagingSenderId: "3135442374",
+  appId: "1:3135442374:web:986ae16d8835f00439f6c7",
+  measurementId: "G-8R7JF7M6CN"
 };
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
