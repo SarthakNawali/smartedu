@@ -112,7 +112,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           {/* Logo/Brand */}
           <div style={{ textAlign: 'center', marginBottom: '16px' }}>
             <h1 className="m-0 text-2xl font-bold bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
-              🎓 FocusEdu <span className="text-xs text-slate-500 font-normal align-bottom">by Orion Labs</span>
+              🎓 FocusEdu <span className="text-xs text-slate-500 font-normal align-bottom"></span>
             </h1>
             <p style={{ color: '#d1d5db', fontSize: '12px' }}>Sign in to continue your learning journey</p>
           </div>
