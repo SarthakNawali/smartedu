@@ -6,7 +6,12 @@ import Link from 'next/link';
 import Snowfall from 'react-snowfall';
 
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
+import {
+  collection,
+  addDoc,
+  serverTimestamp,
+} from 'firebase/firestore';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 interface SectionScore {
@@ -328,6 +333,26 @@ export default function ResumeAnalysisPage() {
       }
 
       setResult(data as AnalysisResult);
+
+      // Save to Firestore for dashboard
+      if (user) {
+        try {
+          const sections = Object.values((data as AnalysisResult).sections).map((s) => ({
+            title: s.title,
+            score: s.score,
+          }));
+          await addDoc(collection(db, 'resumeAnalysis'), {
+            userId: user.uid,
+            overallScore: (data as AnalysisResult).final,
+            grade: (data as AnalysisResult).grade,
+            analysis: { sections },
+            createdAt: serverTimestamp(),
+          });
+        } catch (e) {
+          // Non-critical — dashboard history won't update but analysis still works
+          console.warn('Could not save to dashboard history:', e);
+        }
+      }
     } catch (err: any) {
       setError(err.message || 'An unexpected error occurred.');
     } finally {
