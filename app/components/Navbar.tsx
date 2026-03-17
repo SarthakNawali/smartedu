@@ -12,15 +12,15 @@ import { auth } from '@/lib/firebase'
 // Public navigation links (visible to everyone)
 const publicNavLinks = [
   { name: 'Home', href: '/', icon: Home },
-  { name: 'News', href: '/news', icon: Newspaper },
+
 ]
 
 // Authenticated navigation links (visible only when logged in)
 const authenticatedNavLinks = [
-  { name: 'Suggestions', href: '/suggestions', icon: Sparkles },
+
   { name: 'Resume Analysis', href: '/resume-analysis', icon: FileText },
   { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
-  { name: 'Internship', href: '/internship', icon: GraduationCap },
+  { name: 'Github Analysis', href: '/github-analysis', icon: GraduationCap },
 ]
 
 export default function Navbar() {
@@ -55,7 +55,7 @@ export default function Navbar() {
     <nav className="fixed top-0 w-full z-50 border-b border-white/10 bg-white/5 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          
+
           {/* Logo Section - Clickable */}
           <Link href="/" className="flex items-center gap-2 no-underline hover:opacity-80 transition-opacity flex-shrink-0">
             <h1 className="m-0 text-2xl font-bold bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
@@ -73,18 +73,17 @@ export default function Navbar() {
                   <Link
                     key={link.name}
                     href={link.href}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      isActive(link.href)
-                        ? 'text-white bg-violet-500/20 border border-violet-500/30'
-                        : 'text-gray-300 hover:text-white hover:bg-slate-800/50'
-                    }`}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${isActive(link.href)
+                      ? 'text-white bg-violet-500/20 border border-violet-500/30'
+                      : 'text-gray-300 hover:text-white hover:bg-slate-800/50'
+                      }`}
                   >
                     <Icon size={16} />
                     {link.name}
                   </Link>
                 )
               })}
-              
+
               {/* Authenticated Links */}
               {user && authenticatedNavLinks.map((link) => {
                 const Icon = link.icon
@@ -92,18 +91,17 @@ export default function Navbar() {
                   <Link
                     key={link.name}
                     href={link.href}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      isActive(link.href)
-                        ? 'text-white bg-violet-500/20 border border-violet-500/30'
-                        : 'text-gray-300 hover:text-white hover:bg-slate-800/50'
-                    }`}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${isActive(link.href)
+                      ? 'text-white bg-violet-500/20 border border-violet-500/30'
+                      : 'text-gray-300 hover:text-white hover:bg-slate-800/50'
+                      }`}
                   >
                     <Icon size={16} />
                     {link.name}
                   </Link>
                 )
               })}
-              
+
             </div>
           </div>
 
@@ -161,11 +159,10 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`flex items-center gap-3 px-4 py-3 text-base font-medium border-b border-white/5 transition-colors ${
-                    isActive(link.href)
-                      ? 'text-white bg-violet-500/10'
-                      : 'text-gray-300 hover:text-white hover:bg-slate-800/50'
-                  }`}
+                  className={`flex items-center gap-3 px-4 py-3 text-base font-medium border-b border-white/5 transition-colors ${isActive(link.href)
+                    ? 'text-white bg-violet-500/10'
+                    : 'text-gray-300 hover:text-white hover:bg-slate-800/50'
+                    }`}
                   onClick={() => setIsOpen(false)}
                 >
                   <Icon size={20} />
@@ -173,7 +170,7 @@ export default function Navbar() {
                 </Link>
               )
             })}
-            
+
             {/* Authenticated Links */}
             {user && authenticatedNavLinks.map((link) => {
               const Icon = link.icon
@@ -181,11 +178,10 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`flex items-center gap-3 px-4 py-3 text-base font-medium border-b border-white/5 transition-colors ${
-                    isActive(link.href)
-                      ? 'text-white bg-violet-500/10'
-                      : 'text-gray-300 hover:text-white hover:bg-slate-800/50'
-                  }`}
+                  className={`flex items-center gap-3 px-4 py-3 text-base font-medium border-b border-white/5 transition-colors ${isActive(link.href)
+                    ? 'text-white bg-violet-500/10'
+                    : 'text-gray-300 hover:text-white hover:bg-slate-800/50'
+                    }`}
                   onClick={() => setIsOpen(false)}
                 >
                   <Icon size={20} />
@@ -193,7 +189,7 @@ export default function Navbar() {
                 </Link>
               )
             })}
-            
+
             {/* User Actions */}
             {user ? (
               <div className="px-4 py-4 border-t border-white/10 mt-2">
