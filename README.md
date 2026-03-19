@@ -11,7 +11,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-[🚀 Live Demo](https://focus-edu-delta.vercel.app/) • [📖 Documentation](#) • [💬 Community](#) • [🐛 Report Bug](https://github.com/0rion-Labs/FocusEdu/issues) • [✨ Request Feature](https://github.com/0rion-Labs/FocusEdu/issues)
+ • [📖 Documentation](#) • [💬 Community](#) • [🐛 Report Bug](https://github.com/0rion-Labs/FocusEdu/issues) • [✨ Request Feature](https://github.com/0rion-Labs/FocusEdu/issues)
 
 </div>
 
