@@ -257,7 +257,7 @@ function scoreEducation(text: string) {
     };
 }
 
-function runFallbackScoring(resumeRaw: string, hasTables: boolean, jdRaw: string) {
+export function runFallbackScoring(resumeRaw: string, hasTables: boolean, jdRaw: string) {
     const rc = clean(resumeRaw), jc = clean(jdRaw);
     const jdKw = extractKeywords(jc);
     const matchedKw = jdKw.filter(k => rc.includes(k));

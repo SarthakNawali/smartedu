@@ -47,6 +47,10 @@ interface ResumeDoc {
   id: string;
   overallScore: number;
   grade?: string;
+  rejectionRisk?: number;
+  skillsFound?: number;
+  skillsFoundList?: string[];
+  missingSkills?: Record<string, string[]>;
   analysis: {
     sections: {
       title: string;
@@ -288,7 +292,7 @@ export default function DashboardPage() {
         {data.length > 0 && (
           <>
             {/* SUMMARY STATS */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
               <div className="p-5 bg-slate-900/80 border border-violet-700/30 rounded-2xl">
                 <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Latest Score</p>
                 <p className="text-3xl font-extrabold bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
@@ -301,10 +305,18 @@ export default function DashboardPage() {
                   {Math.max(...data.map(d => d.overallScore))}
                 </p>
               </div>
-              <div className="p-5 bg-slate-900/80 border border-violet-700/30 rounded-2xl">
-                <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Total Analyses</p>
+              <div className="p-5 bg-slate-900/80 border border-violet-700/30 rounded-2xl relative overflow-hidden group">
+                <div className="absolute inset-0 bg-amber-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Latest ML Risk</p>
+                <p className="text-3xl font-extrabold text-amber-400">
+                  {data[0].rejectionRisk !== undefined ? data[0].rejectionRisk : "N/A"}
+                </p>
+              </div>
+              <div className="p-5 bg-slate-900/80 border border-violet-700/30 rounded-2xl relative overflow-hidden group">
+                <div className="absolute inset-0 bg-sky-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Skills Found</p>
                 <p className="text-3xl font-extrabold text-sky-400">
-                  {data.length}
+                  {data[0].skillsFound !== undefined ? data[0].skillsFound : "N/A"}
                 </p>
               </div>
               <div className="p-5 bg-gradient-to-r from-violet-600/80 to-fuchsia-600/80 border border-violet-500/30 rounded-2xl">
@@ -443,62 +455,54 @@ export default function DashboardPage() {
               </div>
             )}
 
-            {/* SKILL IMPROVEMENT */}
+            {/* SKILLS */}
             {activeTab === 'skills' && (
-              <div className="space-y-4">
-                <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">Skill Improvement</h2>
-                {data[0]?.analysis?.sections ? (
-                  data[0].analysis.sections.map((s) => {
-                    const rec = COURSE_MAP[s.title];
-                    if (!rec) return null;
-                    const needsHelp = s.score < rec.threshold;
-                    return (
-                      <div
-                        key={s.title}
-                        className="p-6 bg-slate-900/80 border border-fuchsia-700/30 rounded-2xl shadow-md hover:shadow-fuchsia-500/20 transition-all duration-200"
-                      >
-                        <div className="flex items-center justify-between mb-3">
-                          <h3 className="text-lg font-semibold text-white">{s.title}</h3>
-                          <span className={`text-sm font-bold ${s.score >= rec.threshold ? 'text-emerald-400' : 'text-amber-400'}`}>
-                            {s.score}/{rec.threshold}
-                          </span>
-                        </div>
-                        {/* Progress bar */}
-                        <div className="w-full h-2 bg-slate-800 rounded-full mb-4 overflow-hidden">
-                          <div
-                            className={`h-full rounded-full transition-all duration-700 ${s.score >= rec.threshold ? 'bg-emerald-500' : 'bg-amber-500'
-                              }`}
-                            style={{ width: `${Math.min(s.score, 100)}%` }}
-                          />
-                        </div>
-                        {needsHelp ? (
-                          <div className="flex gap-3">
-                            <a
-                              href={rec.youtube}
-                              target="_blank"
-                              className="px-4 py-2 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg text-white font-semibold shadow hover:scale-105 transition-all text-sm"
-                            >
-                              ▶ YouTube
-                            </a>
-                            <a
-                              href={rec.udemy}
-                              target="_blank"
-                              className="px-4 py-2 bg-gradient-to-r from-purple-600 to-fuchsia-600 rounded-lg text-white font-semibold shadow hover:scale-105 transition-all text-sm"
-                            >
-                              🎓 Udemy
-                            </a>
+              <div className="space-y-8">
+                {/* Captured Skills */}
+                <div className="bg-slate-900/80 p-6 rounded-2xl border border-violet-700/30 shadow-md">
+                  <h2 className="text-xl font-bold mb-4 text-emerald-400 flex items-center gap-2">
+                    ✅ Acquired Skills
+                  </h2>
+                  <div className="flex flex-wrap gap-2">
+                    {data[0]?.skillsFoundList && data[0].skillsFoundList.length > 0 ? (
+                      data[0].skillsFoundList.map((skill, idx) => (
+                        <span key={idx} className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full text-xs font-semibold transition-transform duration-200 hover:scale-105">
+                          {skill}
+                        </span>
+                      ))
+                    ) : (
+                      <p className="text-slate-500 text-sm">No specific ML skills evaluated in this analysis or analysis is outdated. Run a new analysis!</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Skills to Improve / Add */}
+                <div className="bg-slate-900/80 p-6 rounded-2xl border border-violet-700/30 shadow-md">
+                  <h2 className="text-xl font-bold mb-4 text-amber-400 flex items-center gap-2">
+                    🚀 Skills to Add & Improve
+                  </h2>
+                  {data[0]?.missingSkills && Object.keys(data[0].missingSkills).length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {Object.entries(data[0].missingSkills).map(([cat, skills]) => {
+                        if (!skills || skills.length === 0) return null;
+                        return (
+                          <div key={cat} className="bg-slate-800/50 border border-slate-700 p-4 rounded-xl hover:border-amber-500/30 transition-colors">
+                            <p className="text-sm font-semibold text-slate-300 mb-3">{cat}:</p>
+                            <div className="flex flex-wrap gap-1.5">
+                              {skills.slice(0, 6).map((skill, idx) => (
+                                <span key={idx} className="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full text-xs font-semibold transition-transform duration-200 hover:scale-105">
+                                  {skill}
+                                </span>
+                              ))}
+                            </div>
                           </div>
-                        ) : (
-                          <p className="text-emerald-400 text-sm font-semibold">
-                            ✅ Strong performance — keep going!
-                          </p>
-                        )}
-                      </div>
-                    );
-                  })
-                ) : (
-                  <p className="text-slate-500 text-center py-10">No section data available yet</p>
-                )}
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p className="text-slate-500 text-sm">No missing skills detected based on the ML analysis!</p>
+                  )}
+                </div>
               </div>
             )}
 
@@ -532,9 +536,21 @@ export default function DashboardPage() {
                       </div>
                     </div>
 
-                    <p className="text-lg font-semibold">
-                      Overall Score: <span className="text-violet-400">{resume.overallScore}</span>
-                    </p>
+                    <div className="flex flex-wrap items-center gap-4 mt-1 mb-2">
+                      <p className="text-lg font-semibold border-r border-slate-700 pr-4">
+                        Overall Score: <span className="text-violet-400">{resume.overallScore}</span>
+                      </p>
+                      {resume.rejectionRisk !== undefined && (
+                        <p className="text-sm font-semibold bg-slate-800/80 px-3 py-1 rounded-full border border-slate-700">
+                          🚨 ML Risk: <span className={resume.rejectionRisk < 2 ? "text-emerald-400" : "text-amber-400"}>{resume.rejectionRisk}</span>
+                        </p>
+                      )}
+                      {resume.skillsFound !== undefined && (
+                        <p className="text-sm font-semibold bg-slate-800/80 px-3 py-1 rounded-full border border-slate-700">
+                          🛠️ Skills Found: <span className="text-sky-400">{resume.skillsFound}</span>
+                        </p>
+                      )}
+                    </div>
 
                     {resume.analysis?.sections && (
                       <div className="mt-3 grid grid-cols-2 md:grid-cols-5 gap-2">

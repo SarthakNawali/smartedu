@@ -68,8 +68,8 @@ const fetchLatestResumeSkills = async (userId: string): Promise<string[]> => {
 
   const doc = snapshot.docs[0].data();
 
-  // 🔁 Adjust this path if your structure differs
-  return doc.analysis?.skills || [];
+  // Gather the exact IT skills or fallback to legacy analysis array
+  return doc.skillsFoundList || doc.analysis?.skills || [];
 };
 
 
@@ -230,10 +230,14 @@ export default function GitHubAnalysisPage() {
   /* ================= RENDER ================= */
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
+      {/* Decorative Orbs */}
+      <div className="absolute top-1/4 -right-32 w-96 h-96 bg-violet-600/20 rounded-full blur-3xl animate-pulse pointer-events-none z-0"></div>
+      <div className="absolute bottom-1/4 -left-32 w-96 h-96 bg-fuchsia-600/20 rounded-full blur-3xl animate-pulse pointer-events-none z-0" style={{ animationDelay: '1s' }}></div>
+
       <Navbar />
 
-      <main className="max-w-6xl mx-auto px-6 py-12">
+      <main className="max-w-6xl mx-auto px-6 py-12 relative z-10 pt-24">
 
         {/* HEADER */}
         <section className="text-center mb-12">
@@ -299,106 +303,79 @@ export default function GitHubAnalysisPage() {
               </div>
 
               {/* ACTIVITY */}
-              <div className="space-y-2 text-slate-300 text-sm">
-                <p>
-                  <span className="text-slate-400">Total Repositories:</span>{' '}
-                  <span className="font-semibold text-white">
-                    {analysis.metrics.activity.totalRepos}
-                  </span>
-                </p>
-
-                <p>
-                  <span className="text-slate-400">Active Repositories:</span>{' '}
-                  <span className="font-semibold text-white">
-                    {analysis.metrics.activity.activeReposCount}
-                  </span>
-                </p>
-
-                {analysis.metrics.activity.daysSinceLastActivity !== null && (
-                  <p>
-                    <span className="text-slate-400">Last Activity:</span>{' '}
-                    <span className="font-semibold text-white">
-                      {analysis.metrics.activity.daysSinceLastActivity} days ago
+              <div className="p-6 bg-slate-800/30 border border-slate-700/50 rounded-2xl">
+                <h3 className="text-xl font-bold text-white mb-4">📈 Activity</h3>
+                <div className="space-y-3 text-slate-300 text-sm">
+                  <p className="flex justify-between border-b border-slate-700/50 pb-2">
+                    <span className="text-slate-400">Total Repositories:</span>
+                    <span className="font-semibold text-white">{analysis.metrics.activity.totalRepos}</span>
+                  </p>
+                  <p className="flex justify-between border-b border-slate-700/50 pb-2">
+                    <span className="text-slate-400">Active Repositories:</span>
+                    <span className="font-semibold text-white">{analysis.metrics.activity.activeReposCount}</span>
+                  </p>
+                  {analysis.metrics.activity.daysSinceLastActivity !== null && (
+                    <p className="flex justify-between border-b border-slate-700/50 pb-2">
+                      <span className="text-slate-400">Last Activity:</span>
+                      <span className="font-semibold text-white">{analysis.metrics.activity.daysSinceLastActivity} days ago</span>
+                    </p>
+                  )}
+                  <p className="flex justify-between">
+                    <span className="text-slate-400">Recent Commits:</span>
+                    <span className={`font-semibold ${analysis.metrics.activity.recentCommits ? 'text-emerald-400' : 'text-red-400'}`}>
+                      {analysis.metrics.activity.recentCommits ? 'Yes' : 'No'}
                     </span>
                   </p>
-                )}
-
-                <p>
-                  <span className="text-slate-400">Recent Commits:</span>{' '}
-                  <span className={`font-semibold ${analysis.metrics.activity.recentCommits
-                      ? 'text-emerald-400'
-                      : 'text-red-400'
-                    }`}>
-                    {analysis.metrics.activity.recentCommits ? 'Yes' : 'No'}
-                  </span>
-                </p>
+                </div>
               </div>
-
 
               {/* COMPLEXITY */}
-              <div className="space-y-2 text-slate-300 text-sm">
-                <p>
-                  <span className="text-slate-400">Total Stars:</span>{' '}
-                  <span className="font-semibold text-white">
-                    {analysis.metrics.complexity.totalStars}
-                  </span>
-                </p>
-
-                <p>
-                  <span className="text-slate-400">Total Forks:</span>{' '}
-                  <span className="font-semibold text-white">
-                    {analysis.metrics.complexity.totalForks}
-                  </span>
-                </p>
-
-                <p>
-                  <span className="text-slate-400">Avg Repo Size:</span>{' '}
-                  <span className="font-semibold text-white">
-                    {analysis.metrics.complexity.averageRepoSize} KB
-                  </span>
-                </p>
-
-                <p>
-                  <span className="text-slate-400">Advanced Projects:</span>{' '}
-                  <span className={`font-semibold ${analysis.metrics.complexity.hasAdvancedProjects
-                      ? 'text-emerald-400'
-                      : 'text-slate-400'
-                    }`}>
-                    {analysis.metrics.complexity.hasAdvancedProjects ? 'Yes' : 'No'}
-                  </span>
-                </p>
+              <div className="p-6 bg-slate-800/30 border border-slate-700/50 rounded-2xl">
+                <h3 className="text-xl font-bold text-white mb-4">🧩 Complexity</h3>
+                <div className="space-y-3 text-slate-300 text-sm">
+                  <p className="flex justify-between border-b border-slate-700/50 pb-2">
+                    <span className="text-slate-400">Total Stars:</span>
+                    <span className="font-semibold text-white">{analysis.metrics.complexity.totalStars}</span>
+                  </p>
+                  <p className="flex justify-between border-b border-slate-700/50 pb-2">
+                    <span className="text-slate-400">Total Forks:</span>
+                    <span className="font-semibold text-white">{analysis.metrics.complexity.totalForks}</span>
+                  </p>
+                  <p className="flex justify-between border-b border-slate-700/50 pb-2">
+                    <span className="text-slate-400">Avg Repo Size:</span>
+                    <span className="font-semibold text-white">{analysis.metrics.complexity.averageRepoSize} KB</span>
+                  </p>
+                  <p className="flex justify-between">
+                    <span className="text-slate-400">Advanced Projects:</span>
+                    <span className={`font-semibold ${analysis.metrics.complexity.hasAdvancedProjects ? 'text-emerald-400' : 'text-slate-400'}`}>
+                      {analysis.metrics.complexity.hasAdvancedProjects ? 'Yes' : 'No'}
+                    </span>
+                  </p>
+                </div>
               </div>
+
+              {/* OPEN SOURCE */}
               <div className="p-6 bg-slate-800/30 border border-slate-700/50 rounded-2xl">
                 <h3 className="text-xl font-bold text-white mb-4">⭐ Open Source</h3>
-
-                <div className="space-y-2 text-slate-300 text-sm">
-                  <p>
-                    <span className="text-slate-400">Total Stars:</span>{' '}
-                    <span className="font-semibold text-white">
-                      {analysis.metrics.openSource.totalStars}
-                    </span>
+                <div className="space-y-3 text-slate-300 text-sm">
+                  <p className="flex justify-between border-b border-slate-700/50 pb-2">
+                    <span className="text-slate-400">Total Stars:</span>
+                    <span className="font-semibold text-white">{analysis.metrics.openSource.totalStars}</span>
                   </p>
-
-                  <p>
-                    <span className="text-slate-400">Total Forks:</span>{' '}
-                    <span className="font-semibold text-white">
-                      {analysis.metrics.openSource.totalForks}
-                    </span>
+                  <p className="flex justify-between border-b border-slate-700/50 pb-2">
+                    <span className="text-slate-400">Total Forks:</span>
+                    <span className="font-semibold text-white">{analysis.metrics.openSource.totalForks}</span>
                   </p>
-
-                  <p>
-                    <span className="text-slate-400">Avg Stars / Repo:</span>{' '}
-                    <span className="font-semibold text-white">
-                      {analysis.metrics.openSource.averageStarsPerRepo}
-                    </span>
+                  <p className="flex justify-between border-b border-slate-700/50 pb-2">
+                    <span className="text-slate-400">Avg Stars / Repo:</span>
+                    <span className="font-semibold text-white">{analysis.metrics.openSource.averageStarsPerRepo}</span>
                   </p>
-
-                  <p>
-                    <span className="text-slate-400">Top Repo:</span>{' '}
-                    <span className="font-semibold text-violet-400 truncate block">
-                      {analysis.metrics.openSource.topStarredRepo}
+                  <div className="flex flex-col gap-1">
+                    <span className="text-slate-400">Top Repo:</span>
+                    <span className="font-semibold text-violet-400 truncate w-full text-right block" title={analysis.metrics.openSource.topStarredRepo}>
+                      {analysis.metrics.openSource.topStarredRepo || "None"}
                     </span>
-                  </p>
+                  </div>
                 </div>
               </div>
 
