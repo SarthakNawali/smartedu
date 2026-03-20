@@ -41,6 +41,7 @@ BASE      = os.path.dirname(os.path.abspath(__file__))
 MODELS    = os.path.join(os.path.dirname(BASE), "app", "ats_models")
 TFIDF_PKL = os.path.join(MODELS, "tfidf_vectorizer.pkl")
 RF_PKL    = os.path.join(MODELS, "rf_ats_scorer.pkl")
+IT_RF_PKL = os.path.join(MODELS, "rf_it_engineer_classifier.pkl")
 
 # ─── Skill & resume patterns ─────────────────────────────────────────────────
 SKILL_PAT = [
@@ -105,6 +106,16 @@ if os.path.exists(RF_PKL):
         print(f"  ✗ RF load error: {e}")
 else:
     print(f"  ✗ RF model not found at {RF_PKL}")
+
+it_model_data = None
+if os.path.exists(IT_RF_PKL):
+    try:
+        it_model_data = joblib.load(IT_RF_PKL)
+        print(f"  ✓ IT Engineer RF model loaded from {IT_RF_PKL}")
+    except Exception as e:
+        print(f"  ✗ IT Engineer RF load error: {e}")
+else:
+    print(f"  ✗ IT Engineer RF model not found at {IT_RF_PKL}")
 
 print("Model loading complete.\n")
 
@@ -465,6 +476,21 @@ def score_resume(req: ScoreRequest):
             "Add Experience, Education, and Skills sections.")
 
     result = run_scoring(req.resume_text, req.has_tables, req.job_description)
+    return result
+
+from it_scorer import predict_rejection_risk
+
+class ScoreITRequest(BaseModel):
+    resume_text: str
+
+@app.post("/score-it-engineer")
+def score_it_engineer(req: ScoreITRequest):
+    if not it_model_data:
+        raise HTTPException(500, "IT model not loaded")
+    if len(req.resume_text.strip()) < 100:
+        raise HTTPException(400, "Resume text too short (min 100 chars).")
+    
+    result = predict_rejection_risk(req.resume_text, it_model_data)
     return result
 
 
