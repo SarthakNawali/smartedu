@@ -61,32 +61,32 @@ interface ResumeDoc {
 
 const COURSE_MAP: Record<
   string,
-  { threshold: number; youtube: string; udemy: string }
+  { threshold: number; videoUrl: string; courseUrl: string }
 > = {
   'Skills & Technologies': {
     threshold: 75,
-    youtube: 'https://www.youtube.com/results?search_query=technical+skills+software+developer',
-    udemy: 'https://www.udemy.com/course/the-complete-web-development-bootcamp/',
+    videoUrl: 'https://www.youtube.com/results?search_query=technical+skills+software+developer',
+    courseUrl: 'https://www.udemy.com/course/the-complete-web-development-bootcamp/',
   },
   'Work Experience': {
     threshold: 70,
-    youtube: 'https://www.youtube.com/results?search_query=software+engineering+experience+resume',
-    udemy: 'https://www.udemy.com/course/software-engineering-career-guide/',
+    videoUrl: 'https://www.youtube.com/results?search_query=software+engineering+experience+resume',
+    courseUrl: 'https://www.udemy.com/course/software-engineering-career-guide/',
   },
   'Education': {
     threshold: 65,
-    youtube: 'https://www.youtube.com/results?search_query=education+section+resume+tips',
-    udemy: 'https://www.udemy.com/course/resume-writing/',
+    videoUrl: 'https://www.youtube.com/results?search_query=education+section+resume+tips',
+    courseUrl: 'https://www.udemy.com/course/resume-writing/',
   },
   'Professional Summary': {
     threshold: 70,
-    youtube: 'https://www.youtube.com/results?search_query=professional+summary+resume+tips',
-    udemy: 'https://www.udemy.com/course/resume-writing-masterclass/',
+    videoUrl: 'https://www.youtube.com/results?search_query=professional+summary+resume+tips',
+    courseUrl: 'https://www.udemy.com/course/resume-writing-masterclass/',
   },
   'Contact Information': {
     threshold: 75,
-    youtube: 'https://www.youtube.com/results?search_query=contact+information+resume+best+practices',
-    udemy: 'https://www.udemy.com/course/job-search-skills/',
+    videoUrl: 'https://www.youtube.com/results?search_query=contact+information+resume+best+practices',
+    courseUrl: 'https://www.udemy.com/course/job-search-skills/',
   },
 };
 
@@ -474,18 +474,18 @@ export default function DashboardPage() {
                         {needsHelp ? (
                           <div className="flex gap-3">
                             <a
-                              href={rec.youtube}
+                              href={rec.videoUrl}
                               target="_blank"
                               className="px-4 py-2 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg text-white font-semibold shadow hover:scale-105 transition-all text-sm"
                             >
-                              ▶ YouTube
+                              ▶ Video Tutorial
                             </a>
                             <a
-                              href={rec.udemy}
+                              href={rec.courseUrl}
                               target="_blank"
                               className="px-4 py-2 bg-gradient-to-r from-purple-600 to-fuchsia-600 rounded-lg text-white font-semibold shadow hover:scale-105 transition-all text-sm"
                             >
-                              🎓 Udemy
+                              🎓 Online Course
                             </a>
                           </div>
                         ) : (

@@ -5,7 +5,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'FocusedU - AI-Powered Learning Recommendations',
-  description: 'Discover the best YouTube videos and Udemy courses with AI-powered personalized recommendations',
+  description: 'Discover the best learning resources and courses with AI-powered personalized recommendations',
 };
 
 export default function RootLayout({

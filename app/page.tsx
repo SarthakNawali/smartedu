@@ -48,7 +48,7 @@ const HomePage = () => {
               
               {/* Subheadline */}
               <p className="text-lg md:text-xl text-slate-400 mb-10 leading-relaxed">
-                Discover personalized YouTube videos and Udemy courses tailored to your skill level. 
+                Discover personalized learning resources and courses tailored to your skill level. 
                 Let AI guide your learning journey.
               </p>
               
@@ -117,7 +117,7 @@ const HomePage = () => {
               <div className="w-14 h-14 mb-6 rounded-xl bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 border border-violet-500/30 flex items-center justify-center text-2xl">
                 📺
               </div>
-              <h4 className="text-xl font-semibold text-white mb-3">YouTube & Udemy Integration</h4>
+              <h4 className="text-xl font-semibold text-white mb-3">Learning Platform Integration</h4>
               <p className="text-slate-400 text-sm leading-relaxed">Access the best free and paid content from the world&apos;s largest learning platforms.</p>
             </div>
             
