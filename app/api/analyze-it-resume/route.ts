@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
                     }
                 }
 
-                const prompt = `You are an expert IT recruiter providing resume feedback.
+                const prompt = `You are an expert IT recruiter providing brief, actionable resume feedback.
 
 CANDIDATE PROFILE:
 - Skills Found: ${skillsStr}
@@ -103,13 +103,12 @@ REJECTION HISTORY:
 
 MISSING SKILLS:${missingStr}
 
-Provide SPECIFIC, ACTIONABLE feedback:
-1. Top 3 MUST-ADD skills (with concrete reasoning)
-2. 5 concrete improvement steps for the resume
-3. Estimated timeline for improvements
-4. How to showcase these improvements
+Please provide a VERY SHORT and easy-to-read summary:
+1. Overall Verdict (1 short sentence)
+2. Top 3 MUST-ADD skills (bullet points)
+3. Top 3 Quick Fixes for the resume (bullet points)
 
-Be encouraging but direct. Focus on highest-impact changes.`;
+Be encouraging but extremely concise. Do not write long paragraphs.`;
 
                 const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
                     method: "POST",
